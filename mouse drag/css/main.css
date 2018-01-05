@@ -1,0 +1,19 @@
+/* css reset */
+html, body, div {
+  margin: 0;
+  padding: 0;
+}
+
+/* main css */
+body {
+  background: #333;
+}
+.drag-box {
+  position: absolute;
+  /* margin: 20px; */
+  height: 100px;
+  width: 100px;
+  border: 3px solid #ccc;
+  background: #ccff00;
+  box-shadow: 0 0 5px 0 #ccc;
+}
