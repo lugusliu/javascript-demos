@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CSSOM Demo</title>
+  <style>
+  body, div, p {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    height: 3000px;
+  }
+  
+  #box {
+    width: 400px;
+    height: 200px;
+    border: 20px solid rgba(19, 194, 28, 0.856);
+    text-align: left;
+    margin: 50px;
+    padding: 30px;
+  }
+
+  #table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 80%;
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    background: #fff;
+  }
+
+  #table td, #table th {
+    border: 1px solid #ccc;
+    padding: 8px;
+  }
+
+  #table th {
+    background: #eee;
+  }
+
+  #info-fixed {
+    width: 3em;
+    border-radius: 3px;
+    position: fixed;
+    right: 20px;
+    bottom: 10px;
+    background: rgba(38, 187, 87, 0.342);
+    cursor: pointer;
+    visibility: hidden;
+  }
+
+  #table .clk {
+      cursor: pointer;
+  }
+
+  </style>
+</head>
+<body>
+  
+  <div id="box">
+    <b>&lt;div id="box"&gt;&lt;/div&gt;</b><br>
+    margin = 50px<br>
+    padding = 30px<br>
+    border = 20px<br>
+    height = 200px<br>
+    width = 400px 
+  </div>
+
+  <table id="table">
+    <tr>
+      <th>window view</th>
+      <th>screen view</th>
+      <th>document view(#box)</th>
+      <th>element object view(#box)</th>
+      <th>mouse event view(#box)</th>
+    </tr>
+    <tr class="info">
+      <td title="(.innerWidth, .innerHeight)">.innerWidth/.innerHeight</td>
+      <td title="(.width, .height)">.width./height</td>
+      <td title=".getBoundingClientRect()(top, right, bottom, left)">.getBoundingClientRect()</td>
+      <td title="(.clientWidth, .clientHeight)">.clientWidth./clientHeight</td>
+      <td title="(.pageX, .pageY)">.pageX./pageY</td>
+    </tr >
+    <tr class="info">
+      <td title="(.outerWidth, .outerHeight)">.outerWidth/.outerHeight</td>
+      <td title="(.availWidth, .availHeight)">.availWidth./availHeight</td>
+      <td class="clk" title="Click to see how this method works">.scrollIntoView()</td>
+      <td title="(.clientLeft, .clientTop)">.clientLeft./clientTop</td>
+      <td title="(.clientX, .clientY)">.clientX./clientY</td>
+    </tr>
+    <tr class="info">
+      <td title="(.pageXOffset, .pageYOffset)">.pageXOffset/.pageYOffset</td>
+      <td></td>
+      <td></td>
+      <td title="(.offsetWidth, .offsetHeight)">.offsetWidth./offsetHeight</td>
+      <td title="(.screenX, .screenY)">.screenX./screenY</td>
+    </tr>
+    <tr class="info">
+      <td title="(.screenX, .screenY)">.screenX/.screenY</td>
+      <td></td>
+      <td></td>
+      <td title="(.offsetLeft, .offsetTop)">.offsetLeft./offsetTop</td>
+      <td></td>
+    </tr>
+    <tr class="info">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td title="(.offsetParent)">.offsetParent</td>
+      <td></td>
+    </tr>
+  </table>
+
+  <p id="info-fixed" title="to top">0</p>
+  
+  <script>
+      var info = document.querySelectorAll(".info");
+      var box = document.getElementById('box');
+      var infoFixed = document.getElementById('info-fixed');
+      
+
+      // window view
+      var windowView = function () {
+          var w_iw = window.innerWidth;
+          var w_ih = window.innerHeight;
+          info[0].childNodes[1].innerHTML = "(" + w_iw + ", " + w_ih + ")";
+          var w_ow = window.outerWidth;
+          var w_oh = window.outerHeight;
+          info[1].childNodes[1].innerHTML = "(" + w_ow + ", " + w_oh + ")";
+          var w_pxo = window.pageXOffset;
+          var w_pyo = window.pageYOffset;
+          info[2].childNodes[1].innerHTML = "(" + w_pxo + ", " + w_pyo + ")";
+          var w_sx = window.screenX;
+          var w_sy = window.screenY;
+          info[3].childNodes[1].innerHTML = "(" + w_sx + ", " + w_sy + ")";
+      };
+
+      // screen view
+      var screenView = function () {
+          var s_w = screen.width;
+          var s_h = screen.height;
+          info[0].childNodes[3].innerHTML = "(" + s_w + ", " + s_h + ")";
+          var s_aw = screen.availWidth;
+          var s_ah = screen.availHeight;
+          info[1].childNodes[3].innerHTML = "(" + s_aw + ", " + s_ah + ")";
+      };
+
+      // document view
+      var documentView = function () {
+          var d_gbcr =box.getBoundingClientRect();
+          info[0].childNodes[5].innerHTML = "(" + d_gbcr.top + ", " + d_gbcr.right + ", " + d_gbcr.bottom + ", " + d_gbcr.left + ")";  
+          // scrollIntoView  
+          info[1].childNodes[5].onclick = function () {
+              box.scrollIntoView({block: "start", behavior: "smooth"});
+          };
+      };
+
+      // element object view
+      var elementObjectView = function () {
+          var e_ch = box.clientHeight;
+          var e_cw = box.clientWidth;
+          info[0].childNodes[7].innerHTML = "(" + e_ch + ", " + e_cw + ")";
+          var e_cl = box.clientLeft;
+          var e_ct = box.clientTop;
+          info[1].childNodes[7].innerHTML = "(" + e_cl + ", " + e_ct + ")";
+          var e_oh = box.offsetHeight;
+          var e_ow = box.offsetWidth;
+          info[2].childNodes[7].innerHTML = "(" + e_oh + ", " + e_ow + ")";
+          var e_ol = box.offsetLeft;
+          var e_ot = box.offsetTop;
+          info[3].childNodes[7].innerHTML = "(" + e_ol + ", " + e_ot + ")";
+          var e_op = box.offsetParent;
+          info[4].childNodes[7].innerHTML = "(" + e_op.tagName.toLocaleLowerCase() + ")";
+      };
+
+      // mouse event view
+      var mouseEventView = function (e) {
+          var e = event || window.event;
+          var m_pX = e.pageX;
+          var m_pY = e.pageY;
+          info[0].childNodes[9].innerHTML = "(" + m_pX + ", " + m_pY + ")";
+          var m_cX = e.clientX;
+          var m_cY = e.clientY;
+          info[1].childNodes[9].innerHTML = "(" + m_cX + ", " + m_cY + ")";      
+          var m_sX = e.screenX;
+          var m_sY = e.screenY;
+          info[2].childNodes[9].innerHTML = "(" + m_sX + ", " + m_sY + ")";  
+      };
+
+      // mouse scroll view
+      var mouseScrollView = function () {
+          var srlTop = window.pageYOffset;
+          var totalTop = document.documentElement.offsetHeight - document.documentElement.clientHeight;
+          
+          if (srlTop == 0) {
+              infoFixed.style.visibility = "hidden";
+          } else {
+              infoFixed.style.visibility = "visible";
+          }
+          
+          var per = (srlTop / totalTop) * 100;
+          infoFixed.innerHTML = per.toFixed() + "%";
+      };
+
+      // back to top
+      var toTop = function () {
+        document.documentElement.scrollIntoView({block: "start", behavior: "smooth"});
+      };
+
+      // window.onload
+      window.onload = function () {
+          windowView();
+          screenView();
+          documentView()
+          elementObjectView();
+          box.onclick = mouseEventView;
+          infoFixed.onclick = toTop;
+          console.log(window.pageYOffset)
+      };
+
+      // window.onscroll
+      window.onscroll = function () {
+          mouseScrollView();
+      };
+
+      // window.onresize
+      window.onresize = function () {
+          windowView();
+      };
+  </script>
+</body>
+</html>
