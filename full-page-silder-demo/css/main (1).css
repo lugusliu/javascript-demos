@@ -1,0 +1,69 @@
+body, div, p, h3 {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+#container, .sections, .section {
+  height: 100%;
+  position: relative;
+}
+
+#section0,
+#section1,
+#section2,
+#section3 {
+  text-align: center;
+  color: #000;
+}
+
+#section0 {
+  background-color: #0cf;
+}
+
+#section1 {
+  background-color: #ff6;
+}
+
+#section2 {
+  background-color: #ccf;
+}
+
+#section3 {
+  background-color: #f90;
+}
+.pages{
+  position: fixed;
+  list-style: none;
+}
+.vertical.pages{
+  right: 10px;
+  top: 50%;
+}
+.horizontal.pages{
+  left: 50%;
+  bottom: 10px;
+}
+.pages li{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  margin: 10px 5px;
+  cursor: pointer;
+}
+.horizontal.pages li{
+  display: inline-block;
+  vertical-align: middle;
+}
+.pages li.active{
+  width: 14px;
+  height: 14px;
+  border: 2px solid #FFFE00;
+  background: none;
+  margin-left: 0;
+}
