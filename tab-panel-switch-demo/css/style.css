@@ -1,0 +1,76 @@
+html, body, div, ul, li{
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 12px;
+}
+
+ul {
+  list-style: none;
+}
+
+.notice {
+  width: 298px;
+  height: 98px;
+  margin: 10px;
+  border: 1px solid #eee;
+  overflow: hidden;
+}
+
+.notice-title {
+  height: 27px;
+  position: relative;
+  background: #f7f7f7;
+}
+
+.notice-title ul {
+  position: absolute;
+  width: 301px;
+  left: -1px;
+}
+
+.notice-title li {
+  float: left;
+  text-align: center;
+  overflow: hidden;
+  background: transparent;
+  padding: 0 1px;
+  border-bottom: 1px solid #eee;
+}
+
+.notice-title li a {
+  display: inline-block;
+  line-height: 26px;  
+  width: 58px;
+  height: 26px;
+}
+
+.notice-title li.select {
+  background: #fff;
+  border-bottom-color: #fff;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  padding: 0;
+  font-weight: bolder;
+}
+
+.notice-title a:link,
+.notice-title a:visited {
+  text-decoration: none;
+  color: #000;
+}
+
+.notice-title a:hover {
+  color: #f90;
+}
+
+.notice-content .mode {
+  margin: 10px 10px 10px 19px;
+  display: none;
+}
+
+.notice-content div:nth-of-type(1) {
+  display: block;
+}
