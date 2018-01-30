@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>progressbar</title>
+  <style>
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      text-align: center;
+      width: 1000px;
+    }  
+  
+   
+    #progressbar {
+      position: relative;
+      width: 0%;
+      height: 20px;
+      background-color: #0cf;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+  
+  
+    button {
+      color: rgb(20, 29, 37);
+      font-weight: bold;
+      text-decoration: none;
+      padding: 10px 25px; 
+      border: 1px solid #ccc;
+      transition: color .15s ease-in-out;
+      outline: none;
+      user-select: none;
+      border-radius: 2px;
+    } 
+
+    button:hover {
+      background-color: #0f9;
+      color: #fff; 
+    } 
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="progressbar">0%</div>
+  <button id="btn">run</button>
+</div>
+<script>
+// 获取相应的元素
+const progressbar = document.getElementById('progressbar');
+const btn = document.getElementById('btn');
+
+// 设置timer
+let timer = null;
+
+// 如果没有requestAnimationFrame方法，用setTimeOut方法模拟
+if (!window.requestAnimationFrame) {
+    let lastTime = 0;
+    window.requestAnimationFrame = function (callback) {
+        let currTime = new Data().getTime();
+        let timeToCall = Math.max(16.7, 16.7 - (currTime - lastTime));
+
+        let id = window.setTimeout(function () {
+            callback(currTime + timeToCall);
+        }, timeToCall);
+        lastTime = currTime + timeToCall;
+        return id;
+    };
+}
+
+// 如果没有cancelAnimationFrame方法，用clearTimeOut方法模拟
+if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function (id) {
+        clearTimeout(id);
+    }
+}
+
+// 绑定事件
+btn.onclick = function () {
+    progressbar.style.width = '0';
+    cancelAnimationFrame(timer); // 先清除已有的计时器，避免产生重复调用的问题
+
+    timer = requestAnimationFrame(function fn() {
+        if (parseInt(progressbar.style.width) < 1000) {
+            progressbar.style.width = parseInt(progressbar.style.width) + 10 + 'px';
+            progressbar.innerHTML = parseInt(progressbar.style.width)/10 + '%';
+            timer = requestAnimationFrame(fn); 
+        } else {
+            cancelAnimationFrame(timer);
+            alert("done!")
+        }
+    });
+};
+</script>
+</body>
+</html>
