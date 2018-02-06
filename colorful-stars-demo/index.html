@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>colorful stars</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+    #canvas {
+      border: 3px solid #333;
+      display: block;
+      margin: 0px auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <script>
+      window.onload = function () {
+          var canvas = document.getElementById('canvas');
+          canvas.width = 1000;
+          canvas.height = 1000;
+
+          var context = canvas.getContext('2d');
+
+          context.fillStyle = "black";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          for (var i = 0; i < 100; i++) {
+              var r = Math.floor(Math.random() * 6) + 5;
+              var x = Math.floor(Math.random() * (canvas.width - 4 * r)) + 2 * r;
+              var y = Math.floor(Math.random() * (canvas.height - 4 * r)) + 2 * r;
+              var c = Math.floor(Math.random() * 360);
+              var color = Math.floor(Math.random() * 4095).toString(16);
+              drawStar(context, r, 2 * r, x, y, c, color);  
+          }
+      };
+
+      function drawStar(ctx, r, R, x, y, rot, color) {
+          ctx.beginPath();
+          for (var i = 0; i < 5; i++) {
+              ctx.lineTo(Math.cos((18 + i * 72 - rot) / 180 * Math.PI) * R + x,
+              -Math.sin((18 + i * 72 - rot) / 180 * Math.PI) * R + y);
+              ctx.lineTo(Math.cos((54 + i * 72 - rot) / 180 * Math.PI) * r + x,
+              -Math.sin((54 + i * 72 - rot) / 180 * Math.PI) * r + y);
+          }
+          ctx.closePath();
+
+          ctx.fillStyle = "#" + color;
+          ctx.strokeStyle = "#" + color;
+          ctx.lineWidth = 3;
+          ctx.lineJoin = "round";
+
+          ctx.fill(); // 先填充，后描边
+          ctx.stroke();
+      }
+  </script>
+</body>
+</html>
