@@ -1,0 +1,81 @@
+html, body, div {
+  margin: 0;
+  padding: 0;
+}
+
+.container, .control {
+  text-align: center;
+}
+
+canvas {
+  width: 768px;
+  height: 432px;
+  margin: 20px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+button {
+  background-color: #fff;
+  color: #fff;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 10px;
+  outline: none;
+}
+
+button:nth-of-type(1) {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #666;
+}
+
+button:hover:nth-of-type(1) {
+  background-color: #666;
+}
+
+button:nth-of-type(2) {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #6c6;
+}
+
+button:hover:nth-of-type(2) {
+  background-color: #6c6;
+}
+
+button:nth-of-type(3) {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #99f;
+}
+
+button:hover:nth-of-type(3) {
+  background-color: #99f;
+}
+
+button:nth-of-type(4) {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #f66;
+}
+
+button:hover:nth-of-type(4) {
+  background-color: #f66;
+}
+
+button:nth-of-type(5) {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #fc6;
+}
+
+button:hover:nth-of-type(5) {
+  background-color: #fc6;
+}
