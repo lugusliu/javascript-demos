@@ -41,7 +41,7 @@ EvilCircle.prototype.constructor = EvilCircle;
 
 EvilCircle.prototype.draw = function () {
     ctx.beginPath();
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 3;
     ctx.strokeStyle = this.color;
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.stroke();
@@ -172,7 +172,7 @@ Ball.prototype.collisionDetect = function() {
 
 var balls = [];
 
-var evilcircle = new EvilCircle(100, 100, true, "#f66", 30, 10, 10);
+var evilcircle = new EvilCircle(100, 100, true, "#f66", 30, 20, 20);
 
 evilcircle.setControls();
 
@@ -181,15 +181,15 @@ var timer;
 function loop() {
     ctx.clearRect(0, 0, width, height);
     var num = 1;
-    while (balls.length < 2) {
+    while (balls.length < 50) {
         var ball = new Ball(
             random(50, width),
             random(50, height),
-            random(-7, 7),
-            random(-7, 7),
+            random(-4, 4),
+            random(-4, 4),
             true,
             'rgba(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) + ',' + random(0.50, 1) + ')',
-            random(10,30),
+            random(20,30),
             num,
             "black"
         );
