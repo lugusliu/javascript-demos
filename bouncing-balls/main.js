@@ -28,6 +28,7 @@ function Shape(x, y, velX, velY, exists) {
     this.exists = exists;
 }
 
+// 创建 EvilCircle 构造函数
 function EvilCircle(x, y, exists, color, size, velX, velY) {
     Shape.call(this, x, y, exists);
     this.color = color;
@@ -36,9 +37,11 @@ function EvilCircle(x, y, exists, color, size, velX, velY) {
     this.velY = velY;
 }
 
-EvilCircle.prototype = Object.create(Ball.prototype);
+// 将 EvilCircle 的原型对象指向 Shape 的原型对象
+EvilCircle.prototype = Object.create(Shape.prototype);
 EvilCircle.prototype.constructor = EvilCircle;
 
+// 绘制恶魔圈的方法
 EvilCircle.prototype.draw = function () {
     ctx.beginPath();
     ctx.lineWidth = 3;
@@ -47,6 +50,7 @@ EvilCircle.prototype.draw = function () {
     ctx.stroke();
 };
 
+// 检测恶魔圈的边界的放法
 EvilCircle.prototype.checkBounds = function () {
     if ((this.x + this.size) >= width) {
         this.x = width - this.size;
@@ -65,6 +69,7 @@ EvilCircle.prototype.checkBounds = function () {
     }
 }
 
+// 创建恶魔圈的碰撞算法
 EvilCircle.prototype.setControls = function () {
     var _this = this;
     window.onkeydown = function (e) {
@@ -88,6 +93,7 @@ EvilCircle.prototype.setControls = function () {
     }
 };
 
+// 创建碰撞检测方法
 EvilCircle.prototype.collisionDetect = function () {
     for (var j = 0; j < balls.length; j++) {
         if (balls[j].exists) {
@@ -117,6 +123,7 @@ function Ball (x, y, velX, velY, exists, color, size, num, numColor) {
     this.numColor = numColor;
 }
 
+// 将 Ball 的原型对象指向 Shape 的原型对象
 Ball.prototype = Object.create(Shape.prototype);
 Ball.prototype.constructor = Ball;
 
@@ -164,7 +171,7 @@ Ball.prototype.collisionDetect = function() {
           var distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance <= this.size + balls[j].size) {
-              balls[j].color = this.color;
+              balls[j].color = this.color = 'rgba(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) + ',' + random(0.50, 1) + ')';
           }
         }
     }
@@ -209,8 +216,6 @@ function loop() {
     }
 
     score.textContent = ballNum;
-
-
 
     evilcircle.draw();
     evilcircle.checkBounds();
