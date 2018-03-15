@@ -1,33 +1,56 @@
-const ul = document.querySelector('ul');
-const li = document.querySelectorAll('li');
-const bg = document.querySelector('.bg-pic > img');
-let len = li.length;
+function swiper(obj) {
+  // 初始化一些全局数据
+  let data = {
+    startPos: 0,
+    startPoint: {},
+    liWidth: obj.li[0].offsetWidth
+  };
 
-ul.style.width = len + '00%';
+  // 获取标签 li 元素的个数
+  let len = obj.li.length;
 
-// 绑定手指触摸事件
-ul.addEventListener('touchstart', touch);
+  // 设置 ul 的总宽度
+  obj.ul.style.width = len + '00%';
+  
+  // 绑定手指触摸事件
+  obj.ul.addEventListener('touchstart', touch);
+  
+  // 绑定手指滑动事件
+  obj.ul.addEventListener('touchmove', touch);
+  
+  // 绑定手指抬起事件
+  obj.ul.addEventListener('touchend', touch);
+  
+  // 初始化一个对象存放 ul 面板的初始的一些值
+  obj.ul.pos = 0;
 
-// 绑定手指滑动事件
-ul.addEventListener('touchmove', touch);
-
-// 绑定手指抬起事件
-ul.addEventListener('touchend', touch);
-
-// 将 touch 事件统一放到下面的函数处理
-function touch() {
-  let e = window.event || event;
-  switch (e.type) {
-    case 'touchstart':
-      ul.style.transform = 'translateX(-20%)';
-      bg.setAttribute('src', 'image/2.jpg');
-      bg.setAttribute('alt', 'landscape2');
-      break;
+  // 将 touch 事件统一放到下面的函数处理
+  function touch() {
+    let e = window.event || event;
+    switch (e.type) {
+      case 'touchstart':
+        data.startPoint = e.changedTouches[0];
+        data.startPos = obj.ul.pos;
+        obj.ul.style.transform = `translateX(${obj.ul.pos}px)`;      
+        break;
       case 'touchmove':
-      console.log('touchmove');
-      break;
+      obj.ul.style.transition = '';
+        let movePoint = e.changedTouches[0];
+        let movePos = movePoint.pageX - data.startPoint.pageX + data.startPos;
+        obj.ul.pos = movePos;
+        obj.ul.style.transform = `translateX(${obj.ul.pos}px)`;
+        break;
       case 'touchend':
-      console.log('touchend');
-      break;
+        let currentPos = obj.ul.pos;
+        currentPos = Math.min(0, currentPos);
+        currentPos = Math.max(-data.liWidth * (len - 1), currentPos);
+        let num = Math.round(- currentPos / data.liWidth);
+        obj.ul.style.transition = 'transform 0.5s';
+        obj.bg.setAttribute('src', obj.li[num].children[0].src);
+        obj.bg.setAttribute('alt', `landscape${num + 1}`);
+        obj.ul.pos = - num * data.liWidth;
+        obj.ul.style.transform = `translateX(${obj.ul.pos}px)`;  
+        break;
+    }
   }
 }
