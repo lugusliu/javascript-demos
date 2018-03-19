@@ -35,6 +35,7 @@ function swiper(obj) {
         break;
       case 'touchmove':
       obj.ul.style.transition = '';
+        e.preventDefault();
         let movePoint = e.changedTouches[0];
         let movePos = movePoint.pageX - data.startPoint.pageX + data.startPos;
         obj.ul.pos = movePos;
