@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>douban movie top250</title>
+  <style>
+  html, body, div {
+    padding: 0;
+    margin: 0;
+  }
+
+  .container {
+    /* width: 1000px;
+    padding: 0 10px;
+    margin: 0 auto; */
+    position: relative;
+  }
+
+  .responsive {
+    position: absolute;
+    /* width: 24.999%;
+    padding: 10px;
+    box-sizing: border-box; */
+  }
+
+  /* .inner-content {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);    
+  } */
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- <div class="responsive">
+      <div class="img">
+        <a href="#"><img src="4.webp" alt="1" style="width: 200"></a>
+      </div>
+      <div class="detail">
+        this is a 1. jpg
+      </div>
+    </div> -->
+
+  </div>
+<script>
+
+  // function addScriptTag(src) {
+  //   var script = document.createElement('script');
+  //   script.setAttribute('src', src);
+  //   document.body.appendChild(script);
+  // }
+
+  // window.onload = function () {
+  //   addScriptTag('https://api.douban.com/v2/movie/top250?start=0&count=50&callback=foo');
+  // }
+
+  // function foo(data) {
+  //   console.log(typeof data);
+  // }
+
+  var width = 200; // 一个电影条目的宽度
+  var space = 10; // 电影条目中间的间隙
+  var num = 0; // 一行摆放的电影条目数
+  var winWidth = window.innerWidth; // 浏览器可视窗口的宽度
+  
+  var container = document.querySelector('.container');
+
+  function cells() {
+    num = Math.floor(winWidth / (width + space));
+    container.style.width = num * (width + space) - space + 'px';
+  }
+
+  function getData(start, count) {
+    var url = 'https://api.douban.com/v2/movie/top250?callback=dataFormat';
+    url = url + '&start=' + start + '&count=' + count;
+    var script = document.createElement('script');
+    script.setAttribute('src', url);
+    document.body.appendChild(script);
+  }
+
+  function dataFormat(data) {
+    var movieInfo = [];
+    
+    for (let dinfo of data.subjects) {
+      movieInfo.push({
+        title: dinfo.title,
+        coverImage: dinfo.images.small,
+        originalTitle: dinfo.original_title,
+        year: dinfo.year,
+        rank: dinfo.rating.average
+      });
+    }
+
+    dataRender(movieInfo);
+  }
+
+  function dataRender(movieInfo) {
+    var item = movieInfo[5];
+    var divR = document.createElement('div');
+    divR.className = 'responsive';
+    divR.innerHTML = `
+      <div class="img">
+        <a href="#"><img src="${item.coverImage}" alt="1" style="width: 200"></a>
+      </div>
+      <div class="detail">
+        ${item.title} - ${item.year} - ${item.rank}
+      </div>
+    `;
+    container.appendChild(divR);
+
+  }
+
+  function execute() {
+    getData(0, 20);
+  }
+
+  window.onload = function () {
+    execute();
+  };
+
+</script>
+</body>
+</html>
