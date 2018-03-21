@@ -16,6 +16,7 @@
     padding: 0 10px;
     margin: 0 auto; */
     position: relative;
+    margin: 0 auto;
   }
 
   .responsive {
@@ -23,6 +24,17 @@
     /* width: 24.999%;
     padding: 10px;
     box-sizing: border-box; */
+    background: #9cf;
+    width: 200px;
+    overflow: hidden;
+    animation: aniR .6s ease-out;
+  }
+
+  @keyframes aniR {
+    0% { opacity: 0; transform: translate(-40%, -40%); }
+    40% {opacity: 0; transform: translate(-20%, -20%); }
+    60% {opacity: .8; transform: translate(-10%, -10%); }
+    100% { opacity: 1; transform: translate(0, 0); }
   }
 
   /* .inner-content {
@@ -63,12 +75,24 @@
   var space = 10; // 电影条目中间的间隙
   var num = 0; // 一行摆放的电影条目数
   var winWidth = window.innerWidth; // 浏览器可视窗口的宽度
+  var minIndex = 0;
+  var arrTop = [];
+  var arrLeft = [];
+  var timer = null;
+  var lastDom = null; // 每一轮请求的最后一部影片的 dom
+  var flag = false; // 加载开关
+  var start = 0; // 每一轮加载前第一部影片的初始 index 值
   
   var container = document.querySelector('.container');
 
+  // 布局相关
   function cells() {
-    num = Math.floor(winWidth / (width + space));
+    num = Math.floor(winWidth / (width + space)); // 每行有几列
     container.style.width = num * (width + space) - space + 'px';
+    for (var i = 0; i < num; i++) {
+      arrTop.push(0);
+      arrLeft.push( i * (width + space));
+    }
   }
 
   function getData(start, count) {
@@ -96,28 +120,60 @@
   }
 
   function dataRender(movieInfo) {
-    var item = movieInfo[5];
-    var divR = document.createElement('div');
-    divR.className = 'responsive';
-    divR.innerHTML = `
+    var index = 0;
+    var length = movieInfo.length;
+
+    ~~function recur() { // 递归渲染
+      var item = movieInfo[index];
+      minIndex = arrTop.indexOf(Math.min(...arrTop)); // 取出上一列中的高度最小的值的 index 值
+      var divR = document.createElement('div');
+      divR.className = 'responsive';
+      divR.innerHTML = `
       <div class="img">
-        <a href="#"><img src="${item.coverImage}" alt="1" style="width: 200"></a>
+        <a href="#"><img src="${item.coverImage}" alt="1" width="200"></a>
       </div>
       <div class="detail">
         ${item.title} - ${item.year} - ${item.rank}
       </div>
-    `;
-    container.appendChild(divR);
-
+      `;
+      container.appendChild(divR);
+      divR.querySelector('img').onload = function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          divR.style.left = arrLeft[minIndex] + 'px';
+          divR.style.top = arrTop[minIndex] + 'px';
+          arrTop[minIndex] += divR.offsetHeight + 2 * space;
+          if (index === length - 1) {
+            lastDom = divR;
+            flag = true;
+          }
+          index++;
+          index < length && recur();
+        }, 50);
+      }
+    }();
+    start += 20;
   }
 
   function execute() {
+    cells();
     getData(0, 20);
   }
 
   window.onload = function () {
     execute();
   };
+
+  window.onscroll = function () {
+    var totalH = document.documentElement.scrollTop + window.innerHeight;
+    if (flag) {
+      var lastDomH = lastDom.offsetTop - 200;      
+      if (lastDomH < totalH) {
+        flag = false;
+        getData(start, 20);
+      }
+    }
+  }
 
 </script>
 </body>
