@@ -12,18 +12,12 @@
   }
 
   .container {
-    /* width: 1000px;
-    padding: 0 10px;
-    margin: 0 auto; */
     position: relative;
     margin: 0 auto;
   }
 
   .responsive {
     position: absolute;
-    /* width: 24.999%;
-    padding: 10px;
-    box-sizing: border-box; */
     background: #9cf;
     width: 200px;
     overflow: hidden;
@@ -36,10 +30,6 @@
     60% {opacity: .8; transform: translate(-10%, -10%); }
     100% { opacity: 1; transform: translate(0, 0); }
   }
-
-  /* .inner-content {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);    
-  } */
   </style>
 </head>
 <body>
@@ -56,21 +46,6 @@
 
   </div>
 <script>
-
-  // function addScriptTag(src) {
-  //   var script = document.createElement('script');
-  //   script.setAttribute('src', src);
-  //   document.body.appendChild(script);
-  // }
-
-  // window.onload = function () {
-  //   addScriptTag('https://api.douban.com/v2/movie/top250?start=0&count=50&callback=foo');
-  // }
-
-  // function foo(data) {
-  //   console.log(typeof data);
-  // }
-
   var width = 200; // 一个电影条目的宽度
   var space = 10; // 电影条目中间的间隙
   var num = 0; // 一行摆放的电影条目数
@@ -85,6 +60,8 @@
   
   var container = document.querySelector('.container');
 
+  var cache = []; // 初始化一个缓存池
+
   // 布局相关
   function cells() {
     num = Math.floor(winWidth / (width + space)); // 每行有几列
@@ -95,6 +72,7 @@
     }
   }
 
+  // 获取数据
   function getData(start, count) {
     var url = 'https://api.douban.com/v2/movie/top250?callback=dataFormat';
     url = url + '&start=' + start + '&count=' + count;
@@ -103,9 +81,10 @@
     document.body.appendChild(script);
   }
 
+  // 整理数据
   function dataFormat(data) {
     var movieInfo = [];
-    
+    // console.log(data);
     for (let dinfo of data.subjects) {
       movieInfo.push({
         title: dinfo.title,
@@ -119,6 +98,7 @@
     dataRender(movieInfo);
   }
 
+  // 渲染数据
   function dataRender(movieInfo) {
     var index = 0;
     var length = movieInfo.length;
@@ -160,10 +140,12 @@
     getData(0, 20);
   }
 
+  // 页面载入时触发
   window.onload = function () {
     execute();
   };
 
+  // 页面滚动时触发
   window.onscroll = function () {
     var totalH = document.documentElement.scrollTop + window.innerHeight;
     if (flag) {
