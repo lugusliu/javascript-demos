@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>debounce demo</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      padding-top: 20px;
+      text-align: center;
+    }
+
+    #intro {
+      font-size: 20px;
+      color: #666;
+    }
+
+    #container {
+      width: 640px;
+      height: 240px;
+      margin: 32px auto 0;
+      background-color: #666;
+      border-radius: 8px;
+      box-shadow: 1px 1px 3px 1px #aaa;
+      line-height: 240px;
+      text-align: center;
+      color: #fff;
+      font-weight: bolder;
+      font-size: 32px;
+    }
+
+    #container:hover {
+      box-shadow: 2px 2px 4px 1px #888; 
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #6cf;
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 5px;
+      outline: none;
+      font-size: 20px;
+      color: #666;
+    }
+
+    button:hover {
+      background-color: #9cf;
+    }
+  </style>
+</head>
+<body>
+  <span id="intro">在黑色框体内移动光标，查看效果</span>
+  <div id="container"></div>
+  <button id="change">开启debounce</button>
+  <button id="right" disabled>立即执行下一次</button>
+  <script>
+    let count = 1;
+    let flag = true;
+    const container = document.getElementById('container');
+    const change = document.getElementById('change');
+    const right = document.getElementById('right');
+    
+    // 主函数
+    const getUserAction = function (e) { 
+      this.textContent = count++;
+    };
+
+    // 防抖函数
+    const debounce = function (func, wait, immediate) {
+      let timeout;
+      let args;
+      // 应对主函数具有返回值的情况
+
+      const debounced = function () {
+        // 这里的 arg 变量是要将事件对象 event 传入主函数
+        args = arguments;
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        if (immediate) {
+          // 这里的判断是为了仅在开始时（此时 timeout === undefined）执行唯一的一次
+          let callNow = !timeout;
+          // 下面的语句一旦执行，!timeout === false
+          timeout = setTimeout(() => {
+            // 由于使用了箭头函数，所以不需要缓存 this
+            func.apply(this, args);            
+          }, wait);
+          if (callNow) {
+            func.apply(this, args);
+          }
+        } else {
+          timeout = setTimeout(() => {
+            func.apply(this, args);
+          }, wait);
+        }
+      }
+
+      debounced.cancel = () => {
+        clearTimeout(timeout);
+        timeout = null;
+      };
+      return debounced;
+    };
+
+    const setUserAction = debounce(getUserAction, 2000, true);
+
+    // 为各个组件添加事件监听器    
+    container.addEventListener('mousemove', getUserAction);
+
+    change.addEventListener('click', function () {
+      if (flag) {
+        this.textContent = '关闭debounce';
+        container.removeEventListener('mousemove', getUserAction);
+        container.addEventListener('mousemove', setUserAction);
+        right.disabled = false;
+        flag = false;
+      } else {
+        this.textContent = '开启debounce';
+        container.removeEventListener('mousemove', setUserAction);        
+        container.addEventListener('mousemove', getUserAction);
+        right.disabled = true;        
+        flag = true;
+      }
+    });
+
+    right.addEventListener('click', function () {
+      setUserAction.cancel();
+    });
+  </script>
+</body>
+</html>
