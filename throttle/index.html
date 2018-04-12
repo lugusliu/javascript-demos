@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>throttle demo</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      padding-top: 20px;
+      text-align: center;
+    }
+
+    #intro {
+      font-size: 20px;
+      color: #666;
+    }
+
+    #container {
+      width: 640px;
+      height: 240px;
+      margin: 32px auto 0;
+      background-color: #666;
+      border-radius: 8px;
+      box-shadow: 1px 1px 3px 1px #aaa;
+      line-height: 240px;
+      text-align: center;
+      color: #fff;
+      font-weight: bolder;
+      font-size: 32px;
+    }
+
+    #container:hover {
+      box-shadow: 2px 2px 4px 1px #888; 
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #6cf;
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 5px;
+      outline: none;
+      font-size: 20px;
+      color: #666;
+    }
+
+    button:hover {
+      background-color: #9cf;
+    }
+  </style>
+</head>
+<body>
+  <span id="intro">在黑色框体内移动光标，查看效果</span>  
+  <div id="container"></div>
+  <button id="change">开启throttle</button>  
+  <script>
+    let count = 1;
+    let flag = true;
+    
+    const container = document.getElementById('container');
+    const change = document.getElementById('change');
+    
+    // 主函数
+    const getUserAction = function (e) { 
+      this.textContent = count++;
+      // console.log(e);
+    };
+
+    // 节流函数
+    const throttle = function (func, wait) {
+      let timeout;
+      let args;
+      let previous = 0;
+      const throttled = function () {
+        args = arguments;
+        let now = +new Date();
+        let remaining = wait - (now - previous);
+        if (remaining <= 0 || remaining > wait) {
+          if (timeout) {
+            clearTimeout(timeout);
+            timeout = null;
+          }
+          previous = now;
+          func.apply(this, args);
+        } else if (!timeout) {
+          timeout = setTimeout(() => {
+            previous = +new Date();
+            timeout = null;            
+            func.apply(this, args);
+          }, remaining);
+        }
+      };
+      return throttled;
+    }
+    const setUserAction = throttle(getUserAction, 3000);
+
+    // 为各个组件添加事件监听器
+    container.addEventListener('mousemove', getUserAction);    
+
+    change.addEventListener('click', function () {
+      if (flag) {
+        this.textContent = '关闭throttle';
+        container.removeEventListener('mousemove', getUserAction);
+        container.addEventListener('mousemove', setUserAction);
+        flag = false;
+      } else {
+        this.textContent = '开启throttle';
+        container.removeEventListener('mousemove', setUserAction);        
+        container.addEventListener('mousemove', getUserAction);
+        flag = true;
+      }
+    });
+  </script>
+</body>
+</html>
