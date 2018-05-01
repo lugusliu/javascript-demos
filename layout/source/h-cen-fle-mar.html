@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>flex + margin</title>
+  <style>
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: #bbb;
+  }
+
+  .container {
+    margin: 1em auto;
+    background-color: #fff;
+    max-width: 50em;
+    border-radius: .3em;
+    box-shadow: 1px 1px 3px 1px #aaa;
+  }
+
+  .container:hover {
+    box-shadow: 1px 1px 5px 1px #fff;
+  }
+
+  /* 以下是 css 核心代码 */
+  .parent {
+    height: 10em;
+    display: flex;
+  }
+
+  .child {
+    margin: 0 auto;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 以下是 html 核心代码 -->    
+    <div class="parent">
+      <div class="child">flex + margin</div>
+    </div>
+  </div>
+</body>
+</html>

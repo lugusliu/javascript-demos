@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>layout</title>
+  <style>
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: #bbb;
+  }
+
+  .container {
+    margin: 1em auto;
+    background-color: #fff;
+    max-width: 50em;
+    border-radius: .3em;
+    box-shadow: 1px 1px 3px 1px #aaa;
+  }
+
+  .container:hover {
+    box-shadow: 1px 1px 5px 1px #fff;
+  }
+
+  fieldset {
+    border: 0;
+    border-top: 3px solid #ccc;
+  }
+
+  legend {
+    color: #000;
+    background-color: #fff;
+    font-size: 20px;
+    padding: 0 1em;
+  }
+
+  ::-webkit-details-marker {
+    display: none;
+  }
+
+  ::-moz-list-bullet {
+    font-size: 0;
+    float: left;
+  }
+
+  summary {
+    user-select: none;
+    outline: 0;
+  }
+
+  dt::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    margin: 4px 0 0 .5ch;
+    background: url(./arrow-on.svg) no-repeat;
+    background-size: 100% 100%;
+    transition: transform .2s;
+  }
+
+  [open] dt::after {
+    transform: rotate(90deg);
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <fieldset>
+      <legend align="center">居中布局</legend>
+    </fieldset>
+    <details open>
+      <summary><dt>水平居中</dt></summary> 
+      <dd><a href="./source/h-cen-inl-tex.html">inline-block + text-align</a></dd>
+      <dd><a href="./source/h-cen-tab-mar.html">table + margin</a></dd>
+      <dd><a href="./source/h-cen-abs-tra.html">absolute + transform</a></dd>
+      <dd><a href="./source/h-cen-fle-mar.html">flex + margin</a></dd>
+      <dd><a href="./source/h-cen-fle-jus.html">flex + justify-content</a></dd>
+    </details>
+    <details open>
+      <summary><dt>垂直居中</dt></summary> 
+      <dd><a href>table-cell + vertical-align</a></dd>
+      <dd><a href>absolute + transform</a></dd>
+      <dd><a href>flex + align-items</a></dd>
+    </details>
+    <details open>
+      <summary><dt>水平垂直居中</dt></summary> 
+      <dd><a href>absolute + transform</a></dd>
+      <dd><a href>inline-block + text-align + table-cell + vertical-align</a></dd>
+      <dd><a href>flex + justify-content + align-items</a></dd>
+    </details>
+  </div>
+</body>
+</html>
