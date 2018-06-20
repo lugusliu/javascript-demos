@@ -1,0 +1,2 @@
+webpackJsonp([3],{"4Bdo":function(t,e,a){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n={render:function(){var t=this.$createElement;return(this._self._c||t)("div",{attrs:{id:"avatar-upload"}},[this._v("\n  avatar-upload\n")])},staticRenderFns:[]};var r=a("VU/8")({data:function(){return{}}},n,!1,function(t){a("PRHg")},"data-v-7c8d4f82",null);e.default=r.exports},PRHg:function(t,e){}});
+//# sourceMappingURL=3.aeb13aa35d0eac3b39a3.js.map
